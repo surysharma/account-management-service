@@ -1,0 +1,75 @@
+buildscript {
+    ext {
+        spring_boot_version = '2.4.0'
+        spring_dep_management_version = '1.0.10.RELEASE'
+        lombok_version = '5.3.0'
+        junit_jupiter_api_version = '5.3.2'
+        spring_boot_starter_web_version = '2.4.0'
+        flogger_version = '0.5.1'
+        spring_boot_eureka_client_version = '2.2.6.RELEASE'
+        spring_cloud_version = '2020.0.0-M5'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'application'
+    id "org.springframework.boot" version "${spring_boot_version}"
+    id "io.spring.dependency-management" version "${spring_dep_management_version}"
+    id "io.freefair.lombok" version "${lombok_version}"
+}
+
+group = 'com.thebigscale'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+
+}
+
+dependencies {
+    // This dependency adds the eureka-client
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: "${spring_boot_eureka_client_version}"
+
+    // This dependency is used by the application.
+    implementation 'com.google.guava:guava:29.0-jre'
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+    implementation "org.springframework.boot:spring-boot-starter-web:${spring_boot_starter_web_version}"
+
+    // https://mvnrepository.com/artifact/com.google.flogger/flogger
+    implementation "com.google.flogger:flogger:${flogger_version}"
+
+    // https://mvnrepository.com/artifact/com.google.flogger/flogger-system-backend
+    implementation group: 'com.google.flogger', name: 'flogger-system-backend', version: "${flogger_version}"
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+
+    compileOnly "org.springframework.boot:spring-boot-devtools"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'com.thebigscale.accountmanagementservice.AccountManagementServiceApplication'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${spring_cloud_version}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
